@@ -6,27 +6,28 @@ const transactionSchema = new Schema(
             type: String,
             required: true,
             trim: true
-        }
-    }, 
+        },
 
-    {
+        "type": {
+            type: String,
+            required: true,
+            trim: true,
+            enum: ["income", "expense"]
+        },
+
         "amount": {
             type: Number,
             required: true,
             min: 0
-        }
-    },
+        },
 
-    {
         "category": {
             type: String,
             required: true,
             trim: true, 
-            enum: ["Food", "Transport", "Bills", "Shopping", "Others"]
-        }
-    },
-
-    {
+            enum: ["Food", "Transport", "Bills", "Shopping", "Other"]
+        },
+    
         "description": {
             type: String,
             trim: true
@@ -38,4 +39,4 @@ const transactionSchema = new Schema(
     }
 )
 
-export default mongoose.model("Transaction", transactionSchema)
+export const Transaction = mongoose.model("Transaction", transactionSchema)
