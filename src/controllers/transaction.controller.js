@@ -31,4 +31,25 @@ const getTransactions = async (req, res) => {
     }
 }
 
-export { createTransaction, getTransactions }
+// Get transaction by ID
+const getTransactionById = async (req, res) => {
+    try {
+        const { id } = req.params
+
+        if(!id){
+            return res.status(404).json({ message: "Transaction is required" })
+        }
+
+        const transaction = await Transaction.findById(id)
+
+        if(!transaction){
+            return res.status(404).json({ message: "Transaction is not found" })
+        }
+
+        return res.status(200).json({transaction})
+    } catch(error){
+        res.status(500).json({ message: "Internal server error", error })
+    }
+}
+
+export { createTransaction, getTransactions, getTransactionById }
