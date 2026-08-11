@@ -1,5 +1,6 @@
 import { Transaction } from '../models/transaction.model.js'
 
+// Create transaction
 const createTransaction = async (req, res) => {
     try{
         const { title, type, amount, category, description } = req.body
@@ -19,5 +20,15 @@ const createTransaction = async (req, res) => {
     }
 }
 
+// Get all transactions 
+const getTransactions = async (req, res) => {
+    try {
+        const transactions = await Transaction.find()
+        res.status(200).json(transactions)
 
-export { createTransaction }
+    } catch(error){
+        res.status(500).json({ message: "Internal server error", error })
+    }
+}
+
+export { createTransaction, getTransactions }
