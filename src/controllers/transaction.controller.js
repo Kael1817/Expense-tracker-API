@@ -37,13 +37,13 @@ const getTransactionById = async (req, res) => {
         const { id } = req.params
 
         if(!id){
-            return res.status(404).json({ message: "Transaction is required" })
+            return res.status(400).json({ message: "Transaction is required" })
         }
 
         const transaction = await Transaction.findById(id)
 
         if(!transaction){
-            return res.status(404).json({ message: "Transaction is not found" })
+            return res.status(404).json({ message: "Transaction Id is not found" })
         }
 
         return res.status(200).json({transaction})
@@ -52,4 +52,32 @@ const getTransactionById = async (req, res) => {
     }
 }
 
-export { createTransaction, getTransactions, getTransactionById }
+const updateTransaction = async (req, res) => {
+    try {
+        // Validation: Checks if the body is empty
+        if(Object.keys(req.body).length === 0){
+            return res.status(400).json({
+                message: "No data provided to update"
+            })
+        }
+
+        const { id } = req.params
+        const transaction = await Transaction.findByIdAndUpdate(id, req.body, { returnDocument: 'after' })
+
+        if(!transaction){
+            return res.status(404).json({ message: "Transaction not found" })
+        }
+
+        return res.status(200).json({ message: "Transaction updated successfully", transaction })
+
+    } catch(error) {
+        res.status(500).json({ message: "Internal server error", error })
+    }
+}
+
+export { 
+    createTransaction,
+    getTransactions,
+    getTransactionById,
+    updateTransaction 
+}
