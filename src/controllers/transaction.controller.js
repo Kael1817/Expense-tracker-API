@@ -75,9 +75,24 @@ const updateTransaction = async (req, res) => {
     }
 }
 
+const deleteTransaction = async (req, res) => {
+    try {
+        const deleted = await Transaction.findByIdAndDelete(req.params.id)
+        if(!deleted){
+            return res.status(400).json({ message: "Transaction not found" })
+        }
+
+        res.status(200).json({ message: "Transaction deleted successfully", deleted })
+
+    } catch(error){
+        res.status(500).json({ message: "Internal server error", error })
+    }
+}
+
 export { 
     createTransaction,
     getTransactions,
     getTransactionById,
-    updateTransaction 
+    updateTransaction, 
+    deleteTransaction
 }
